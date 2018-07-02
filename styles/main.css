@@ -1,5 +1,44 @@
 header{
     width: 100%;
     height: 70px;
+    background-color: burlywood;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    z-index: 1;
+    box-shadow: 0px 2px 20px #777;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+header input[type=text]{
+    border: 0;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255, 0.5);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    padding-right: 20px;
+    text-indent: 10px
     
+}
+
+header input::-webkit-input-placeholder{
+    color: rgba(30,30,30,0.5);
+    
+}
+
+header button{
+    border: 0;
+    outline: 0;
+    height: 51px;
+    width: 50px;
+    background-color: brown;
+    border-radius: 25px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #fff;
 }
