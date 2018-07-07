@@ -63,7 +63,7 @@ ul.todo-list li{
     min-height: 50px;
     position: relative;
     background-color: #fff;
-    box-shadow: 1px 2px 10px #555;
+    box-shadow: 1px 1px 1px 1px #888;
     border-radius: 5px;
     list-style: none;
     padding: 5px;
@@ -87,5 +87,10 @@ ul.todo-list li{
     background: none;
     outline: none;
     border: none;
+}
+
+.buttons img{
+ width: 30px;
+ height: 30px;
 }
 
