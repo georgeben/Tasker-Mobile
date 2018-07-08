@@ -67,6 +67,7 @@ ul.todo-list li{
     border-radius: 5px;
     list-style: none;
     padding: 5px;
+    padding-top: 30px;
     margin-bottom: 10px;
 }
 
@@ -94,3 +95,8 @@ ul.todo-list li{
  height: 30px;
 }
 
+#completed li{
+    background-color: lime;
+    color: white;
+    
+}
