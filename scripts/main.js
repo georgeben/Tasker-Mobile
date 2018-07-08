@@ -27,6 +27,13 @@ function completeTodo(){
     
     var target = (parentId === "todo")? document.getElementById('completed'):document.getElementById('todo');
     
+    var completedItems = document.getElementById('completed').childElementCount;
+    if(completedItems === 0){
+        var completedLabel = document.createElement('h4');
+        completedLabel.appendChild(document.createTextNode("Completed tasks"));
+        document.getElementById('todo').appendChild(completedLabel);
+    }
+    
     parent.removeChild(item);
     target.insertBefore(item, target.childNodes[0]);
 }
