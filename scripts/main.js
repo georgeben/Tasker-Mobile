@@ -33,5 +33,7 @@ function addItem(todoItem){
     
     list_item.appendChild(buttons);
     
-    todoList.appendChild(list_item);
+    //todoList.appendChild(list_item);
+    
+    todoList.insertBefore(list_item, todoList.childNodes[0]);
 }
