@@ -1,15 +1,20 @@
+var data = {
+    todo:[],
+    completed:[]
+}
+
 var add_button = document.getElementById('add-todo');
-//console.log(add_button);
 
 var inputField = document.getElementById('input');
-//console.log(inputField);
 
 add_button.addEventListener('click', addItemTodo);
 
 function addItemTodo(){
     var userInput = inputField.value;
+    userInput = userInput.trim();
     if(userInput){
-      addItem(userInput);
+        data.todo.push(userInput);
+        addItem(userInput);
         inputField.value = '';
     } 
 }
@@ -21,12 +26,27 @@ function removeTodoItem(){
 }
 
 function completeTodo(){
-    var item = this.parentNode.parentNode;
-    var parent = item.parentNode;
-    var parentId = parent.id;
+    var item = this.parentNode.parentNode; //Retrieves the list item which button was clicked
+    var parent = item.parentNode; //Retrieves the list(ul) associated with that list item
+    var parentId = parent.id; //Retrieves the id of the list
     
+    //
+    var todoText = item.innerText;
+    
+    if(parentId === "todo"){
+        data.todo.splice(data.todo.indexOf(todoText), 1);
+        data.completed.push(todoText);
+    }else{
+        data.completed.splice(data.completed.indexOf(todoText), 1);
+        data.todo.push(todoText);
+    }
+    
+    console.log(data);
+    
+    //Determines where to move the list item:either the list of todo items or the list of completed items
     var target = (parentId === "todo")? document.getElementById('completed'):document.getElementById('todo');
     
+    //Display a label on the completed list
     var completedItems = document.getElementById('completed').childElementCount;
     if(completedItems === 0){
         var completedLabel = document.createElement('h4');
@@ -62,5 +82,6 @@ function addItem(todoItem){
     
     list_item.appendChild(buttons);
     
+    //Adds the new list item to the top of the list
     todoList.insertBefore(list_item, todoList.childNodes[0]);
 }
