@@ -1,7 +1,27 @@
-var data = {
+var data = (localStorage.getItem('tasks'))? JSON.parse(localStorage.getItem('tasks')) : {
     todo:[],
     completed:[]
 }
+
+displayData();
+
+function displayData(){
+    //Displays the stored tasks on th elist items
+    if(!data.todo.length && !data.completed.length) return;
+    
+    for(let i = 0; i < data.todo.length; i++){
+        var task = data.todo[i];
+        addItem(task);
+    }
+    
+    for(let j = 0; j < data.completed.length; j++){
+        var task = data.completed[j];
+        addItem(task, completed);
+
+    }
+}
+
+//console.log(JSON.parse(localStorage.getItem('tasks')));
 
 var add_button = document.getElementById('add-todo');
 
@@ -9,11 +29,18 @@ var inputField = document.getElementById('input');
 
 add_button.addEventListener('click', addItemTodo);
 
+function storeDataLocally(){
+    //This function gets called everytime the data object is being updated
+    //JSON.stringify() converts a javascript object to JSON
+    localStorage.setItem('tasks', JSON.stringify(data));
+}
+
 function addItemTodo(){
     var userInput = inputField.value;
     userInput = userInput.trim();
     if(userInput){
         data.todo.push(userInput);
+        storeDataLocally();
         addItem(userInput);
         inputField.value = '';
     } 
@@ -31,7 +58,8 @@ function removeTodoItem(){
         data.completed.splice(data.completed.indexOf(todoText), 1);   
     }
     
-    console.log(data);
+    storeDataLocally();
+    
     parent.removeChild(item);
 }
 
@@ -51,7 +79,7 @@ function completeTodo(){
         data.todo.push(todoText);
     }
     
-    console.log(data);
+    storeDataLocally();
     
     //Determines where to move the list item:either the list of todo items or the list of completed items
     var target = (parentId === "todo")? document.getElementById('completed'):document.getElementById('todo');
@@ -68,7 +96,7 @@ function completeTodo(){
     target.insertBefore(item, target.childNodes[0]);
 }
 
-function addItem(todoItem){
+function addItem(todoItem, completed){
     //console.log(todoItem);
     var list_item = document.createElement('li');
     list_item.classList.add('todo-list');
@@ -85,7 +113,7 @@ function addItem(todoItem){
     done_btn.innerHTML = "<img src='images/done_icon.png'>";
     done_btn.addEventListener('click', completeTodo);
     
-    var todoList = document.getElementById('todo');
+    var todoList = (completed)? document.getElementById("completed") : document.getElementById('todo');
     
     buttons.appendChild(delete_btn);
     buttons.appendChild(done_btn);
