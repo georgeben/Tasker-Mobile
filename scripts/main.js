@@ -22,6 +22,16 @@ function addItemTodo(){
 function removeTodoItem(){
     var item = this.parentNode.parentNode;
     var parent = item.parentNode;
+    var parentId = parent.id;
+    var todoText = item.innerText;
+    
+    if(parentId === "todo"){
+        data.todo.splice(data.todo.indexOf(todoText), 1);
+    }else{
+        data.completed.splice(data.completed.indexOf(todoText), 1);   
+    }
+    
+    console.log(data);
     parent.removeChild(item);
 }
 
