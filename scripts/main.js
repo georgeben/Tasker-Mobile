@@ -1,72 +1,76 @@
-
+//Object to store all the tasks added by the user
 var taskData = (localStorage.getItem('tasks'))? JSON.parse(localStorage.getItem('tasks')) : {
     uncompletedTasks:[],
     completedTasks:[]
 }
 
+//Determines when to show the "Completed tasks label"
 var showCompleteLabel = false;
 
+//Retrieves data from local storage and renders it on the DOM
 displayData();
 
 function displayData(){
-    //Displays the stored tasks on th elist items
+    //Displays the data in local storage on the DOM
+    
+    //If there are no tasks, end function
     if(!taskData.uncompletedTasks.length && !taskData.completedTasks.length) return;
     
+    //Add tasks from the uncompletedTasks array
     for(let i = 0; i < taskData.uncompletedTasks.length; i++){
-        var task = taskData.uncompletedTasks[i];
+        let task = taskData.uncompletedTasks[i];
         addItemToDOM(task);
     }
     
+    //Add tasks from the completedTasks array
     for(let j = 0; j < taskData.completedTasks.length; j++){
-        var task = taskData.completedTasks[j];
+        let task = taskData.completedTasks[j];
         addItemToDOM(task, true);
 
     }
 }
 
 function storeDataLocally(){
-    //This function gets called everytime the data object is being updated
-    //JSON.stringify() converts a javascript object to JSON
+    //JSON.stringify() converts a javascript object to JSON and stores it in local storage
     localStorage.setItem('tasks', JSON.stringify(taskData));
 }
 
-
+//Button to add tasks to the taskList
 var add_button = document.getElementById('add-todo');
 
+//Field for the user to type in tasks
 var inputField = document.getElementById('input');
 
-add_button.addEventListener('click', validateInput);
+//Adds task to the taskList when the add_button is clicked
+add_button.addEventListener('click', addTaskToList);
 
+//Add tasks to task list when the enter key is pressed
 inputField.addEventListener("keypress", function(event){
-    if(event.which === 13){
-        //console.log("Enter key has been pressed");  
-        validateInput();
+    if(event.which === 13){ 
+        //Checks if the enter key as pressed
+        addTaskToList();
     }
 })
 
 
-
-/*function addItemTodo(){
-     validateInput()
-}*/
-
-function validateInput(){
-    var userInput = inputField.value;
-    userInput = userInput.trim();
+function addTaskToList(){
+    let userInput = inputField.value;
+    userInput = userInput.trim(); //Removes empty spaces from the users input
     if(userInput){
         taskData.uncompletedTasks.push(userInput);
         storeDataLocally();
         addItemToDOM(userInput);
-        inputField.value = '';
+        inputField.value = ''; //Resets the input field back toits emptys state
     }
 }
 
 function removeTodoItem(){
-    var listItemClicked = this.parentNode.parentNode;
-    var parent = listItemClicked.parentNode;
-    var parentId = parent.id;
-    var task = listItemClicked.innerText;
+    let listItemClicked = this.parentNode.parentNode;  //Retrieves the list item that was clicked
+    let parent = listItemClicked.parentNode;
+    let parentId = parent.id;
+    let task = listItemClicked.innerText;  //Retrieves the text contaied in the list item
     
+    //Determine which array to remove item from
     if(parentId === "todo"){
         taskData.uncompletedTasks.splice(taskData.uncompletedTasks.indexOf(task), 1);
     }else{
@@ -75,17 +79,19 @@ function removeTodoItem(){
     
     storeDataLocally();
     
+    //Removes the list item from the list
     parent.removeChild(listItemClicked);
 }
 
 function completeTodo(){
-    var listItemClicked = this.parentNode.parentNode; //Retrieves the list item which button was clicked
-    var parent = listItemClicked.parentNode; //Retrieves the list(ul) associated with that list item
-    var parentId = parent.id; //Retrieves the id of the list
     
-    //
-    var task = listItemClicked.innerText;
+    let listItemClicked = this.parentNode.parentNode; //Retrieves the list item that was clicked
+    let parent = listItemClicked.parentNode; //Retrieves the list(ul) associated with that list item
+    let parentId = parent.id; //Retrieves the id of the list
     
+    let task = listItemClicked.innerText;
+    
+    //Determines which array would e updated
     if(parentId === "todo"){
         taskData.uncompletedTasks.splice(taskData.uncompletedTasks.indexOf(task), 1);
         taskData.completedTasks.push(task);
@@ -112,7 +118,7 @@ function completeTodo(){
 }
 
 function addItemToDOM(task, completed){
-    //console.log(todoItem);
+    
     var list_item = document.createElement('li');
     list_item.classList.add('todo-list');
     list_item.innerHTML = task;
