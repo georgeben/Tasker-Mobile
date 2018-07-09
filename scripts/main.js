@@ -1,7 +1,10 @@
+
 var data = (localStorage.getItem('tasks'))? JSON.parse(localStorage.getItem('tasks')) : {
     todo:[],
     completed:[]
 }
+
+var showCompleteLabel = false;
 
 displayData();
 
@@ -21,7 +24,12 @@ function displayData(){
     }
 }
 
-//console.log(JSON.parse(localStorage.getItem('tasks')));
+function storeDataLocally(){
+    //This function gets called everytime the data object is being updated
+    //JSON.stringify() converts a javascript object to JSON
+    localStorage.setItem('tasks', JSON.stringify(data));
+}
+
 
 var add_button = document.getElementById('add-todo');
 
@@ -29,13 +37,20 @@ var inputField = document.getElementById('input');
 
 add_button.addEventListener('click', addItemTodo);
 
-function storeDataLocally(){
-    //This function gets called everytime the data object is being updated
-    //JSON.stringify() converts a javascript object to JSON
-    localStorage.setItem('tasks', JSON.stringify(data));
-}
+inputField.addEventListener("keypress", function(event){
+    if(event.which === 13){
+        //console.log("Enter key has been pressed");  
+        validateInput();
+    }
+})
+
+
 
 function addItemTodo(){
+     validateInput()
+}
+
+function validateInput(){
     var userInput = inputField.value;
     userInput = userInput.trim();
     if(userInput){
@@ -43,7 +58,7 @@ function addItemTodo(){
         storeDataLocally();
         addItem(userInput);
         inputField.value = '';
-    } 
+    }
 }
 
 function removeTodoItem(){
@@ -114,6 +129,14 @@ function addItem(todoItem, completed){
     done_btn.addEventListener('click', completeTodo);
     
     var todoList = (completed)? document.getElementById("completed") : document.getElementById('todo');
+    
+    if(completed  && !showCompleteLabel){
+        var completedLabel = document.createElement('h4');
+        completedLabel.appendChild(document.createTextNode("Completed tasks"));
+        document.getElementById('todo').appendChild(completedLabel);
+        
+        showCompleteLabel = true;
+    }
     
     buttons.appendChild(delete_btn);
     buttons.appendChild(done_btn);
